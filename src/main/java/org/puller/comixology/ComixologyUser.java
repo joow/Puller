@@ -3,7 +3,7 @@ package org.puller.comixology;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ComixologyUser {
+class ComixologyUser {
     private static final String USERNAME_FIELD = "username";
     private static final String PASSWORD_FIELD = "password";
 

@@ -13,8 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class HtmlConverter implements Converter {
-
+class HtmlConverter implements Converter {
     @Override
     public String fromBody(TypedInput body, Type type) throws ConversionException {
         final List<String> lines = new ArrayList<>();

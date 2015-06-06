@@ -4,7 +4,7 @@ import retrofit.http.*;
 
 import java.util.Map;
 
-public interface ComixologyService {
+interface ComixologyService {
     @GET("/")
     String getIndex();
 

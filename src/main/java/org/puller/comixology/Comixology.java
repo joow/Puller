@@ -17,10 +17,14 @@ import java.util.stream.Collectors;
 public class Comixology {
     private static final String COMIXOLOGY_PULL_LIST_BASE_URL = "https://pulllist.comixology.com/";
 
+    private static final String LOGIN_INFO_COOKIE_NAME = "LOGIN_INFO";
+
     private final ComixologyUser user;
     private final ComixologyService service;
 
     private boolean isNotLoggedIn = true;
+
+    private final CookieManager cookieManager = new CookieManager();
 
     public Comixology(final String username, final String password) {
         this.user = new ComixologyUser(username, password);
@@ -28,7 +32,6 @@ public class Comixology {
     }
 
     private ComixologyService createService() {
-        final CookieManager cookieManager = new CookieManager();
         cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ORIGINAL_SERVER);
 
         final OkHttpClient httpClient = new OkHttpClient();
@@ -48,6 +51,11 @@ public class Comixology {
 
         if (isNotLoggedIn) {
             service.login(user.toMap(), csrfToken);
+
+            // TODO IMPROVE !
+            cookieManager.getCookieStore().getCookies().stream()
+                    .filter(c -> LOGIN_INFO_COOKIE_NAME.equals(c.getName()))
+                    .findFirst().orElseThrow(() -> new RuntimeException("Not authenticated !"));
             isNotLoggedIn = false;
         }
 

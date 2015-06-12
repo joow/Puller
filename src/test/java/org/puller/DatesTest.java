@@ -50,4 +50,13 @@ public class DatesTest {
         assertTrue(wednesdays.contains(from));
         assertTrue(wednesdays.contains(to));
     }
+
+    public void itShouldContainsWednesdaysOnDifferentMonths() {
+        final LocalDate from = LocalDate.now();
+        final LocalDate to = from.plusMonths(1);
+
+        final List<LocalDate> wednesdays = Dates.getWednesdays(from, to);
+
+        assertTrue(wednesdays.size() >= 4, "There should exist at least 4 wednesdays in a month spanned period");
+    }
 }

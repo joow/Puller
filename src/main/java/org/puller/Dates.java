@@ -2,21 +2,17 @@ package org.puller;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.temporal.TemporalAdjuster;
-import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
+import java.time.Period;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Dates {
     public static List<LocalDate> getWednesdays(final LocalDate from, final LocalDate to) {
-        final List<LocalDate> wednesdays = new ArrayList<>();
-
-        LocalDate nextWednesday = from.with(TemporalAdjusters.nextOrSame(DayOfWeek.WEDNESDAY));
-        while (nextWednesday.isBefore(to) || nextWednesday.isEqual(to)) {
-            wednesdays.add(nextWednesday);
-            nextWednesday = nextWednesday.with(TemporalAdjusters.next(DayOfWeek.WEDNESDAY));
-        }
-
-        return wednesdays;
+        final int days = Period.between(from, to).getDays() + 1;
+        return Stream.iterate(from, date -> date.plusDays(1))
+                .limit(days)
+                .filter(date -> date.getDayOfWeek() == DayOfWeek.WEDNESDAY)
+                .collect(Collectors.toList());
     }
 }

@@ -20,6 +20,8 @@ public class Comixology {
     private final ComixologyUser user;
     private final ComixologyService service;
 
+    private boolean isNotLoggedIn = true;
+
     public Comixology(final String username, final String password) {
         this.user = new ComixologyUser(username, password);
         this.service = createService();
@@ -44,7 +46,10 @@ public class Comixology {
     public List<Comic> getWeeklyPullList(final LocalDate date) {
         final String csrfToken = getCsrfToken();
 
-        service.login(user.toMap(), csrfToken);
+        if (isNotLoggedIn) {
+            service.login(user.toMap(), csrfToken);
+            isNotLoggedIn = false;
+        }
 
         final String year = String.format(Locale.ENGLISH, "%tY", date);
         final String month = String.format(Locale.ENGLISH, "%tm", date);

@@ -2,6 +2,7 @@ package org.puller;
 
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
+import org.kohsuke.args4j.OptionHandlerRegistry;
 import org.puller.comixology.Comixology;
 
 import java.time.LocalDate;
@@ -11,10 +12,12 @@ import java.util.stream.Collectors;
 
 public class Puller {
     public static void main(String[] args) {
+        OptionHandlerRegistry.getRegistry().registerHandler(LocalDate.class, DateOptionHandler.class);
         final PullerOptions options = new PullerOptions();
         final CmdLineParser parser = new CmdLineParser(options);
         try {
             parser.parseArgument(args);
+            System.out.println(options.getFrom());
 
             if (options.getUsername() == null) {
                 throw new CmdLineException(parser, new LocalizedString("The username is missing"));
@@ -33,10 +36,8 @@ public class Puller {
     }
 
     private static void pull(final PullerOptions options) {
-        final LocalDate from = LocalDate.of(2015, 6, 10);
-        final LocalDate to = LocalDate.now();
-        final List<LocalDate> wednesdays = Dates.getWednesdays(from, to);
         final Comixology comixology = new Comixology(options.getUsername(), options.getPassword());
+        final List<LocalDate> wednesdays = Dates.getWednesdays(options.getFrom(), options.getTo());
         final List<Comic> comics = wednesdays.stream()
                 .map(comixology::getWeeklyPullList)
                 .flatMap(Collection::stream)

@@ -2,6 +2,7 @@ package org.puller;
 
 import org.kohsuke.args4j.Localizable;
 
+import java.text.MessageFormat;
 import java.util.Locale;
 
 public class LocalizedString implements Localizable {
@@ -13,7 +14,7 @@ public class LocalizedString implements Localizable {
 
     @Override
     public String formatWithLocale(final Locale locale, final Object... args) {
-        return String.format(locale, msg, args);
+        return MessageFormat.format(msg, args);
     }
 
     @Override

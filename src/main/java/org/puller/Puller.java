@@ -17,7 +17,6 @@ public class Puller {
         final CmdLineParser parser = new CmdLineParser(options);
         try {
             parser.parseArgument(args);
-            System.out.println(options.getFrom());
 
             if (options.getUsername() == null) {
                 throw new CmdLineException(parser, new LocalizedString("The username is missing"));
@@ -28,6 +27,10 @@ public class Puller {
             }
 
             pull(options);
+
+            if (!options.isDryRun()) {
+                new Configuration(options.getUsername(), options.getPassword(), options.getTo()).save();
+            }
         } catch (CmdLineException e) {
             System.err.println(e.getMessage());
             System.err.println("usage: puller [options]");

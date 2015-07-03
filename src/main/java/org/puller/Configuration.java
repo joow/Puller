@@ -55,6 +55,6 @@ public class Configuration {
             configHome = System.getProperty("user.home");
         }
 
-        return configHome + File.separator + ".config" + File.separator + ".puller";
+        return configHome + File.separator + ".config" + File.separator + "puller";
     }
 }

@@ -6,6 +6,7 @@ import org.kohsuke.args4j.OptionHandlerRegistry;
 import org.puller.comixology.Comixology;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,13 +42,21 @@ public class Puller {
     private static void pull(final PullerOptions options) {
         final Comixology comixology = new Comixology(options.getUsername(), options.getPassword());
         final List<LocalDate> wednesdays = Dates.getWednesdays(options.getFrom(), options.getTo());
+
+        System.out.println(String.format("Fetching Comixology pull list for %s from %s to %s...", options.getUsername(),
+                options.getFrom(), options.getTo()));
+
         final List<Comic> comics = wednesdays.stream()
                 .map(comixology::getWeeklyPullList)
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
 
+        System.out.println();
+        System.out.println(String.format("%s's pull list from %s to %s", options.getUsername(), options.getFrom(), options.getTo()));
+        System.out.println("-------------------------------");
         comics.stream().sorted().forEach(System.out::println);
         System.out.println("-------------------------------");
-        System.out.println(comics.stream().map(Comic::getRawPrice).collect(Collectors.summingDouble(Double::valueOf)));
+        System.out.println(String.format("Total = $%5.2f",
+                comics.stream().map(Comic::getRawPrice).collect(Collectors.summingDouble(Double::valueOf))));
     }
 }

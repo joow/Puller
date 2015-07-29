@@ -17,6 +17,7 @@ public class Puller {
         final PullerOptions options = new PullerOptions();
         final CmdLineParser parser = new CmdLineParser(options);
         try {
+            parser.parseArgument(new Configuration().getArguments());
             parser.parseArgument(args);
 
             if (options.getUsername() == null) {

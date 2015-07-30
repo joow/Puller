@@ -63,7 +63,7 @@ public class Comixology {
             isNotLoggedIn = false;
         }
 
-        LOGGER.info(String.format("Requesting weekly pull list for %s", date));
+        LOGGER.info(String.format("Fetching weekly pull list for %s...", date));
         final String year = String.format(Locale.ENGLISH, "%tY", date);
         final String month = String.format(Locale.ENGLISH, "%tm", date);
         final String dayOfMonth = String.format(Locale.ENGLISH, "%td", date);

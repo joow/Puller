@@ -6,7 +6,6 @@ import org.kohsuke.args4j.OptionHandlerRegistry;
 import org.puller.comixology.Comixology;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
@@ -60,7 +59,7 @@ public class Puller {
         System.out.println("-------------------------------");
         comics.stream().sorted().forEach(System.out::println);
         System.out.println("-------------------------------");
-        System.out.println(String.format("Total = $%5.2f",
+        System.out.println(String.format("Total = $%.2f",
                 comics.stream().map(Comic::getRawPrice).collect(Collectors.summingDouble(Double::valueOf))));
     }
 }

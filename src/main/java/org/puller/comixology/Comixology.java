@@ -47,9 +47,8 @@ public class Comixology {
     }
 
     public List<Comic> getWeeklyPullList(final LocalDate date) {
-        final String csrfToken = getCsrfToken();
-
         if (isNotLoggedIn) {
+            final String csrfToken = getCsrfToken();
             service.login(user.toMap(), csrfToken);
 
             // TODO IMPROVE !

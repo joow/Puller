@@ -17,3 +17,7 @@ dependencies {
     compile 'args4j:args4j:2.32'
     testCompile 'org.testng:testng:6.9.4'
 }
+
+test {
+    useTestNG()
+}

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 class PullerOptions {
-    @Option(name = "-u", aliases = "--username", metaVar = "<user>", usage = "Comixology username")
+    @Option(name = "-u", aliases = "--username", metaVar = "<username>", usage = "Comixology username")
     private String username;
 
     @Option(name = "-p", aliases = "--password", metaVar = "<password>", usage = "Comixology password")

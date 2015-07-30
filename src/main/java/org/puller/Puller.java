@@ -22,24 +22,32 @@ public class Puller {
             parser.parseArgument(new Configuration().getArguments());
             parser.parseArgument(args);
 
-            if (options.getUsername() == null) {
-                throw new CmdLineException(parser, new LocalizedString("The username is missing"));
-            }
+            if (options.isDisplayHelp()) {
+                displayHelp();
+            } else {
+                if (options.getUsername() == null) {
+                    throw new CmdLineException(parser, new LocalizedString("The username is missing"));
+                }
 
-            if (options.getPassword() == null) {
-                throw new CmdLineException(parser, new LocalizedString("The password is missing"));
-            }
+                if (options.getPassword() == null) {
+                    throw new CmdLineException(parser, new LocalizedString("The password is missing"));
+                }
 
-            pull(options);
+                pull(options);
 
-            if (!options.isDryRun()) {
-                new Configuration(options.getUsername(), options.getPassword(), options.getTo()).save();
+                if (!options.isDryRun()) {
+                    new Configuration(options.getUsername(), options.getPassword(), options.getTo()).save();
+                }
             }
         } catch (CmdLineException e) {
             System.err.println(e.getMessage());
             System.err.println("usage: puller [options]");
-            new CmdLineParser(new PullerOptions()).printUsage(System.err);
+            displayHelp();
         }
+    }
+
+    private static void displayHelp() {
+        new CmdLineParser(new PullerOptions()).printUsage(System.err);
     }
 
     private static void pull(final PullerOptions options) {

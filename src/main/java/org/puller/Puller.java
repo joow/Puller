@@ -9,9 +9,12 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class Puller {
+    private static final Logger LOGGER = Logger.getLogger(Puller.class.getName());
+
     public static void main(String[] args) {
         OptionHandlerRegistry.getRegistry().registerHandler(LocalDate.class, DateOptionHandler.class);
         final PullerOptions options = new PullerOptions();
@@ -44,7 +47,7 @@ public class Puller {
         final Comixology comixology = new Comixology(options.getUsername(), options.getPassword());
         final List<LocalDate> wednesdays = Dates.getWednesdays(options.getFrom(), options.getTo());
 
-        System.out.println(String.format("Fetching Comixology pull list for %s from %s to %s...", options.getUsername(),
+        LOGGER.info(String.format("Fetching Comixology pull list for %s from %s to %s...", options.getUsername(),
                 options.getFrom(), options.getTo()));
 
         final List<Comic> comics = wednesdays.stream()

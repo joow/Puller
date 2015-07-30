@@ -12,9 +12,12 @@ import java.net.CookiePolicy;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class Comixology {
+    private static final Logger LOGGER = Logger.getLogger(Comixology.class.getName());
+
     private static final String COMIXOLOGY_PULL_LIST_BASE_URL = "https://pulllist.comixology.com/";
 
     private static final String LOGIN_INFO_COOKIE_NAME = "LOGIN_INFO";
@@ -48,6 +51,7 @@ public class Comixology {
 
     public List<Comic> getWeeklyPullList(final LocalDate date) {
         if (isNotLoggedIn) {
+            LOGGER.info("Logging into Comixology...");
             final String csrfToken = getCsrfToken();
             service.login(user.toMap(), csrfToken);
 
@@ -55,9 +59,11 @@ public class Comixology {
             cookieManager.getCookieStore().getCookies().stream()
                     .filter(c -> LOGIN_INFO_COOKIE_NAME.equals(c.getName()))
                     .findFirst().orElseThrow(() -> new RuntimeException("Not authenticated !"));
+            LOGGER.info("Successfully logged in.");
             isNotLoggedIn = false;
         }
 
+        LOGGER.info(String.format("Requesting weekly pull list for %s", date));
         final String year = String.format(Locale.ENGLISH, "%tY", date);
         final String month = String.format(Locale.ENGLISH, "%tm", date);
         final String dayOfMonth = String.format(Locale.ENGLISH, "%td", date);
